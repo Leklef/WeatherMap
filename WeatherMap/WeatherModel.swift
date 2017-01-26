@@ -9,9 +9,11 @@
 import Foundation
 import UIKit
 import Alamofire
+import CoreLocation
 
 protocol WeatherModelDeligate {
     func updateWeatherInfo(weatherJson:JSON)
+    func failure()
 }
 
 class WeatherModel {
@@ -20,8 +22,8 @@ class WeatherModel {
     
     var deligate: WeatherModelDeligate!
     
-    func getWeatherFor(city:String) {
-        let params = ["q" : city, "APPID" : "8349c4ca0a04952928760a6c2e2c4438"]
+    func weatherFor(city:String) {
+        let params = ["q" : city, "APPID" : "5de039590ab31191bd0a9f613c93588d"]
         setRequest(params: params as [String : AnyObject]?);
     }
     
@@ -33,13 +35,22 @@ class WeatherModel {
         return dateFormatter.string(from: weatherDate as Date)
     }
     
+    func weatherFor(geo: CLLocationCoordinate2D) {
+        let params = ["lat" : geo.latitude, "lon" : geo.longitude, "APPID" : "5de039590ab31191bd0a9f613c93588d"] as [String : Any]
+        setRequest(params: params as [String:AnyObject])
+    }
+    
     func setRequest(params:[String:AnyObject]?) {
         
         request(weatherURL, method: .get, parameters: params).responseJSON { (resp) in
-            let weatherJson = JSON(resp.result.value!)
             
-            DispatchQueue.main.async {
-                self.deligate.updateWeatherInfo(weatherJson: weatherJson)
+            if (resp.error != nil){
+                self.deligate.failure()
+            }else{
+                let weatherJson = JSON(resp.result.value!)
+                DispatchQueue.main.async {
+                    self.deligate.updateWeatherInfo(weatherJson: weatherJson)
+                }
             }
         }
     }

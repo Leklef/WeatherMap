@@ -16,6 +16,7 @@
 		AE07770D1E37411700CEC6B8 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE07770C1E37411700CEC6B8 /* WeatherModel.swift */; };
 		AE0777131E37433D00CEC6B8 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0777101E37433D00CEC6B8 /* SwiftyJSON.swift */; };
 		AE0777141E37433D00CEC6B8 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = AE0777121E37433D00CEC6B8 /* MBProgressHUD.m */; };
+		AE0CEB521E39DD8D0073ED46 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE0CEB511E39DD8D0073ED46 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,8 @@
 		AE0777101E37433D00CEC6B8 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		AE0777111E37433D00CEC6B8 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		AE0777121E37433D00CEC6B8 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		AE0CEB501E39D90C0073ED46 /* BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgingHeader.h; sourceTree = "<group>"; };
+		AE0CEB511E39DD8D0073ED46 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE0CEB521E39DD8D0073ED46 /* CoreLocation.framework in Frameworks */,
 				58A2579BF94C27BBD1AA4652 /* Pods_WeatherMap.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -69,13 +73,16 @@
 		AE0776F91E3740F100CEC6B8 /* WeatherMap */ = {
 			isa = PBXGroup;
 			children = (
-				AE07770E1E3742EC00CEC6B8 /* Supporting files */,
 				AE0776FA1E3740F100CEC6B8 /* AppDelegate.swift */,
 				AE0776FC1E3740F100CEC6B8 /* ViewController.swift */,
 				AE0776FE1E3740F100CEC6B8 /* Main.storyboard */,
 				AE0777011E3740F100CEC6B8 /* Assets.xcassets */,
 				AE0777031E3740F100CEC6B8 /* LaunchScreen.storyboard */,
 				AE07770C1E37411700CEC6B8 /* WeatherModel.swift */,
+				AE0777111E37433D00CEC6B8 /* MBProgressHUD.h */,
+				AE0777121E37433D00CEC6B8 /* MBProgressHUD.m */,
+				AE07770E1E3742EC00CEC6B8 /* Supporting files */,
+				AE0CEB501E39D90C0073ED46 /* BridgingHeader.h */,
 			);
 			path = WeatherMap;
 			sourceTree = "<group>";
@@ -85,8 +92,6 @@
 			children = (
 				AE07770F1E37433D00CEC6B8 /* SwiftyJSON.h */,
 				AE0777101E37433D00CEC6B8 /* SwiftyJSON.swift */,
-				AE0777111E37433D00CEC6B8 /* MBProgressHUD.h */,
-				AE0777121E37433D00CEC6B8 /* MBProgressHUD.m */,
 				AE0777061E3740F100CEC6B8 /* Info.plist */,
 			);
 			name = "Supporting files";
@@ -95,6 +100,7 @@
 		BDEA0A9FFED28C8033DCED84 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE0CEB511E39DD8D0073ED46 /* CoreLocation.framework */,
 				A7167E890336601977204F69 /* Pods_WeatherMap.framework */,
 			);
 			name = Frameworks;
@@ -366,6 +372,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lenar.WeatherMap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = WeatherMap/BridgingHeader.h;
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = WeatherMap/BridgingHeader.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
@@ -382,6 +390,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lenar.WeatherMap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = WeatherMap/BridgingHeader.h;
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = WeatherMap/BridgingHeader.h;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -405,6 +415,7 @@
 				AE07770B1E3740F100CEC6B8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
