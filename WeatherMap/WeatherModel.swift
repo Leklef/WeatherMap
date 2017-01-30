@@ -18,7 +18,7 @@ protocol WeatherModelDeligate {
 
 class WeatherModel {
     
-    let weatherURL = "http://api.openweathermap.org/data/2.5/weather"
+    let weatherURL = "http://api.openweathermap.org/data/2.5/forecast"
     
     var deligate: WeatherModelDeligate!
     
@@ -29,10 +29,11 @@ class WeatherModel {
     
     func timeFromUnix(unixTime:Int) -> String {
         let timeInSecond = TimeInterval(unixTime)
-        let weatherDate = NSDate(timeIntervalSince1970: timeInSecond)
+        let weatherDate = Date(timeIntervalSince1970: timeInSecond)
         let dateFormatter = DateFormatter();
-        dateFormatter.dateFormat = "HH:MM"
-        return dateFormatter.string(from: weatherDate as Date)
+        dateFormatter.dateFormat = "hh:mm"
+        let date = dateFormatter.string(from: weatherDate as Date)
+        return date
     }
     
     func weatherFor(geo: CLLocationCoordinate2D) {
@@ -55,59 +56,75 @@ class WeatherModel {
         }
     }
     
-    func convertTemperature(country:String, temperature:Double) -> Double {
+    func convertTemperature(country:String, temperature:Double) -> String {
+        let deg:Int
+        let str:String
         if (country == "US") {
-            return round(((temperature-273.15)*1.8)+32)
+            deg = Int(round(((temperature-273.15)*1.8)+32))
+            str = "\(deg)℉"
         } else {
-            return round(temperature - 273.15)
+            deg = Int(round(temperature - 273.15))
+            str = "\(deg)℃"
         }
+        return str
     }
     
-    func updateWeatherIcon(condition: Int, nightTime: Bool) -> UIImage {
-        var imageName:String
-        switch (condition,nightTime) {
-        case let(x,y) where x<300 && y==true:imageName = "11n"
-        case let(x,y) where x<300 && y==false:imageName = "11d"
-        case let(x,y) where x<500 && y==true:imageName = "09n"
-        case let(x,y) where x<500 && y==false:imageName = "09d"
-        case let(x,y) where x<=504 && y==true:imageName = "10n"
-        case let(x,y) where x<=504 && y==false:imageName = "10d"
-        case let(x,y) where x==511 && y==true:imageName = "13n"
-        case let(x,y) where x==511 && y==false:imageName = "13d"
-        case let(x,y) where x<600 && y==true:imageName = "09n"
-        case let(x,y) where x<600 && y==false:imageName = "09d"
-        case let(x,y) where x<700 && y==true:imageName = "13n"
-        case let(x,y) where x<700 && y==false:imageName = "13d"
-        case let(x,y) where x<800 && y==true:imageName = "50n"
-        case let(x,y) where x<800 && y==false:imageName = "50d"
-        case let(x,y) where x==800 && y==true:imageName = "01n"
-        case let(x,y) where x==800 && y==false:imageName = "01d"
-        case let(x,y) where x==801 && y==true:imageName = "02n"
-        case let(x,y) where x==801 && y==false:imageName = "02d"
-        case let(x,y) where x>=802 || x<804 && y==true:imageName = "03n"
-        case let(x,y) where x>=802 || x<804 && y==false:imageName = "03d"
-        case let(x,y) where x==804 && y==true:imageName = "04n"
-        case let(x,y) where x==804 && y==false:imageName = "04d"
-        case let(x,y) where x>=900 && y==true:imageName = "11n"
-        case let(x,y) where x>=900 && y==false:imageName = "11d"
-        default:
-            imageName = "none"
-        }
-        let iconImage = UIImage(named: imageName)
-        return iconImage!
-    }
-    
-    func isTimeNight(weatherJson:JSON) -> Bool {
-        var nightTime = false
-        let nowTime = NSDate().timeIntervalSince1970
-        let sunrise = weatherJson["sys"]["sunrise"].doubleValue
-        let sunset = weatherJson["sys"]["sunrise"].doubleValue
-        if (nowTime < sunrise && nowTime > sunset){
-            nightTime = true
-        }
+    func updateWeatherIcon(condition: Int, nightTime: Bool, index: Int, weatherIcon:(_ index: Int, _ icon: String) ->()) {
         
-        return nightTime
+        switch (condition, nightTime) {
+            
+            
+        //Thunderstorm
+        case let (x,y) where x < 300 && y == true:  weatherIcon(index, "11n")
+        case let (x,y) where x < 300 && y == false: weatherIcon(index, "11d")
+            
+        //Drizzle
+        case let (x,y) where x < 500 && y == true:  weatherIcon(index, "09n")
+        case let (x,y) where x < 500 && y == false: weatherIcon(index, "09d")
+            
+        //Rain
+        case let (x,y) where x <= 504 && y == true:  weatherIcon(index, "10n")
+        case let (x,y) where x <= 504 && y == false: weatherIcon(index, "10d")
+            
+        case let (x,y) where x == 511 && y == true:  weatherIcon (index,
+                                                                  
+                                                                  "13n")
+        case let (x,y) where x == 511 && y == false: weatherIcon(index, "13d")
+            
+        case let (x,y) where x < 600 && y == true:  weatherIcon(index, "09n")
+        case let (x,y) where x < 600 && y == false: weatherIcon(index, "09d")
+            
+        //Snow
+        case let (x,y) where x < 700 && y == true:  weatherIcon(index, "13n")
+        case let (x,y) where x < 700 && y == false: weatherIcon(index, "13n")
+            
+        //Atmosphere
+        case let (x,y) where x < 800 && y == true:  weatherIcon(index, "50n")
+        case let (x,y) where x < 800 && y == false: weatherIcon(index, "50d")
+            
+        //Clouds
+        case let (x,y) where x == 800 && y == true:  weatherIcon(index, "01n")
+        case let (x,y) where x == 800 && y == false: weatherIcon(index, "01d")
+            
+        case let (x,y) where x == 801 && y == true:  weatherIcon(index, "02n")
+        case let (x,y) where x == 801 && y == false: weatherIcon(index, "02d")
+            
+        case let (x,y) where x > 802 || x < 804 && y == true:  weatherIcon(index, "03n")
+        case let (x,y) where x > 802 || x < 804 && y == false:  weatherIcon(index, "02d")
+            
+        case let (x,y) where x == 804 && y == true:  weatherIcon(index, "04n")
+        case let (x,y) where x == 804 && y == false: weatherIcon(index, "04d")
+            
+        //Additional
+        case let (x,y) where x < 1000 && y == true:  weatherIcon(index, "11n")
+        case let (x,y) where x < 1000 && y == false: weatherIcon(index, "11d")
+            
+        case let (x,y): weatherIcon(index, "none")
+        }
     }
-
+    
+    func isTimeNight(icon:String) -> Bool {
+        return icon.range(of: "n") != nil
+    }
     
 }
